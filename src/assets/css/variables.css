@@ -1,0 +1,12 @@
+:root {
+  /* Primary Colors */
+  --color-primary-dark: #2b3043;
+  --color-primary-darker: #1a1d28;
+  --color-primary-light: #92d871;
+  --color-primary-light-hover: #7cc55d;
+  --color-black: #000000;
+  /* Backgrounds */
+  --color-bg-overlay: #1a1d2845; /* rgba ilə şəffafdır */
+  --color-bg-light: #f6f5fb;
+  --color-white: #ffffff;
+}

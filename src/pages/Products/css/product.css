@@ -1,0 +1,8 @@
+body {
+    background-color: var(--color-bg-light);
+}
+.content{
+    margin-top: 21px;
+    padding-top: 112px;
+    height: 100%;
+}

@@ -1,18 +1,14 @@
 export const ROUTE = {
   LOGIN: "/",
-  CAMPAIGNS: "/Campaigns",
-  PRODUCTS: "/Products",
-  USERS: "/Users",
-  ORDERS: "/Orders",
-  CATEGORIES: "/Categories",
+  CAMPAIGNS: "/campaigns",
+  PRODUCTS: "/products",
+  USERS: "/users",
+  ORDERS: "/orders",
+  CATEGORIES: "/categories",
 };
 
 
 export const routeList = [
-  {
-    name: "Login",
-    path: ROUTE.LOGIN
-  },
   {
     name: "Campaigns",
     path: ROUTE.CAMPAIGNS

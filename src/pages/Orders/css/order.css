@@ -1,0 +1,10 @@
+ .order_content{
+ display: flex;
+ gap: 20px;
+}
+.orders-body{
+ padding: 40px;
+  background-color: var(--color-white);
+  border-radius: 10px;
+  width: 100%;
+}

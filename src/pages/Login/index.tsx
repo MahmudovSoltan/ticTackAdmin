@@ -5,7 +5,9 @@ import './css/login.css'
 const Login = () => {
   return (
     <div className='container'>
-      <Logo />
+      <div style={{paddingTop:"30px"}}>
+        <Logo />
+      </div>
       <div className='login-wrapper'>
         <LoginLeft />
         <LoginRight />

@@ -1,5 +1,3 @@
-import React from 'react'
-import { useProductStore } from '../../../store/productStore';
 interface Product {
     no: number;
     date: string;
@@ -9,15 +7,9 @@ interface Product {
 import { CiEdit } from "react-icons/ci";
 import { MdOutlineDelete } from 'react-icons/md';
 import '../css/tables.css'
-const ProductsTable = ({ product }: { product: Product[] }) => {
-    const {
-        createProduct,
-        openDeleteModal
-
-    } = useProductStore();
-    const handleEdit = (item: Product) => {
-        createProduct(item);
-    }
+import { useCampinstStore } from "../../../store/campaignsStore";
+const CampaignsTable = ({ product }: { product: Product[] }) => {
+  const {  editCampins, deleteModalFunc } = useCampinstStore();
     return (
         <div>
             <table className="products-table">
@@ -38,8 +30,8 @@ const ProductsTable = ({ product }: { product: Product[] }) => {
                             <td>{item.desc}</td>
                             <td>{item.content}</td>
                             <td className='actions'>
-                                <button className="btn-edit" onClick={() => handleEdit(item)}><CiEdit /></button>
-                                <button className="btn-delete" onClick={() => openDeleteModal()}><MdOutlineDelete />
+                                <button className="btn-edit" onClick={() => editCampins(item)}><CiEdit /></button>
+                                <button className="btn-delete" onClick={() => deleteModalFunc()}><MdOutlineDelete />
                                 </button>
                             </td>
                         </tr>
@@ -52,4 +44,4 @@ const ProductsTable = ({ product }: { product: Product[] }) => {
     )
 }
 
-export default ProductsTable
+export default CampaignsTable

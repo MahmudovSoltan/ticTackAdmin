@@ -1,18 +1,19 @@
 import { use } from 'react'
 import { routeList } from '../../../constants/Routes'
 import './css/sidebar.css'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { CiLogout } from 'react-icons/ci'
 const Sidebar = () => {
     const location = useLocation()
-    console.log(`Current path: ${location.pathname}`);
-    
+    const navigate = useNavigate()
+
     return (
         <div className="sidebar">
             <ul>
                 {
                     routeList.map((route, index) => (
                         <li key={index} className={`sidebar-item ${location.pathname === route.path ? 'active' : ''}`}>
-                            {route.name === "Not Found" ? (<span>Çıxış</span>) : (<span>{route.name}</span>)}
+                            {route.name === "Not Found" ? (<span className='logout'>Çıxış<CiLogout size={24} /></span>) : (<span onClick={() => navigate(route.path)}>{route.name}</span>)}
                         </li>
                     ))}
 

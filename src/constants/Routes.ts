@@ -10,23 +10,23 @@ export const ROUTE = {
 
 export const routeList = [
   {
-    name: "Campaigns",
+    name: "Kampaniyalar",
     path: ROUTE.CAMPAIGNS
   },
   {
-    name: "Products",
+    name: "Məhsullar",
     path: ROUTE.PRODUCTS
   },
   {
-    name: "Users",
+    name: "İstifadəçilər",
     path: ROUTE.USERS
   },
   {
-    name: "Orders",
+    name: "Sifarişlər",
     path: ROUTE.ORDERS
   },
   {
-    name: "Categories",
+    name: "Kateqoriyalar",
     path: ROUTE.CATEGORIES
   },
   {

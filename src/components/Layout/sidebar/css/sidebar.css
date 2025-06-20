@@ -22,3 +22,8 @@
 .sidebar-item:hover {
   color: var(--color-primary-light);
 }
+.logout{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

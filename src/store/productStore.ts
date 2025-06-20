@@ -11,7 +11,6 @@ interface ProductStore {
     createProduct: (product: Product) => void;
     closeDeleteModal: () => void;
     openDeleteModal: () => void;
-
 }
 
 export const useProductStore = create<ProductStore>((set) => ({

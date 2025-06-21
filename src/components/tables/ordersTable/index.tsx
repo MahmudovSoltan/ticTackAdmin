@@ -84,28 +84,34 @@ const OrderTable = ({ orders }: { orders: Order[] }) => {
               <tr>
                 <td>{order.orderNumber}</td>
                 <td>
-                  <img
-                    src={order.user.img_url}
-                    alt={order.user.full_name}
-                    style={{ width: 30, height: 30, borderRadius: "50%", marginRight: 8 }}
-                  />
-                  {order.user.full_name}
+                  <div style={{ display: "flex" }}>
+                    <img
+                      src={order.user.img_url}
+                      alt={order.user.full_name}
+                      style={{ width: 30, height: 30, borderRadius: "50%", marginRight: 8 }}
+                    />
+                    {order.user.full_name}
+
+                  </div>
                 </td>
                 <td>{order.phone}</td>
                 <td>{order.address}</td>
                 <td>{order.total} ₼</td>
                 <td>{selectedStatus[order.id] || order.status}</td>
                 <td>
-                  <button onClick={() => toggleExpand(order.id)}>Ətraflı</button>
-                  <div style={{ display: "inline-block", marginLeft: 10, position: "relative" }}>
-                    <select
-                      value={selectedStatus[order.id] || order.status}
-                      onChange={(e) => handleStatusChange(order.id, e.target.value)}
-                    >
-                      {statuses.map(status => (
-                        <option key={status} value={status}>{status}</option>
-                      ))}
-                    </select>
+                  <div style={{ display: "flex" }}>
+
+                    <button onClick={() => toggleExpand(order.id)}>Ətraflı</button>
+                    <div style={{ display: "inline-block", marginLeft: 10, position: "relative" }}>
+                      <select
+                        value={selectedStatus[order.id] || order.status}
+                        onChange={(e) => handleStatusChange(order.id, e.target.value)}
+                      >
+                        {statuses.map(status => (
+                          <option key={status} value={status}>{status.toLocaleLowerCase()}</option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
                 </td>
               </tr>

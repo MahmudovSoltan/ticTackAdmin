@@ -1,5 +1,8 @@
+import { useState } from "react";
 import TableHeader from "../../ui/tableHeader";
 import OrderTable from "../tables/ordersTable";
+import type { Product } from "../../types/Types";
+import Pagination from "../pagination/pagination";
 const orders = [
   {
     id: 1,
@@ -89,10 +92,20 @@ const orders = [
 ];
 
 const OrdersBody = () => {
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 5;
+   const offset = currentPage * itemsPerPage;
+  const currentItems = orders.slice(offset, offset + itemsPerPage);
+  const pageCount = Math.ceil(orders.length / itemsPerPage);
+
+  const handlePageChange = ({ selected }: { selected: number }) => {
+    setCurrentPage(selected);
+  };
   return (
     <div className="orders-body">
        <p>Orders</p>
-      <OrderTable orders={orders}  />
+      <OrderTable orders={currentItems}  />
+      <Pagination onPageChange={handlePageChange} pageCount={pageCount} forcePage={currentPage}/>
     </div>
   );
 };

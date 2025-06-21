@@ -1,0 +1,10 @@
+.categories_content{
+    display: flex;
+    gap: 20px;
+}
+.category-body {
+  padding: 40px;
+  background-color: var(--color-white);
+  border-radius: 10px;
+  width: 100%;
+}

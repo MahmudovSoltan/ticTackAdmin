@@ -1,14 +1,40 @@
-import React from 'react'
+import { useState } from 'react'
 import Button from '../../../ui/button'
 import { useCampinstStore } from '../../../store/campaignsStore';
 
 const CampinsModal = () => {
-    const { closeCampingsModal } = useCampinstStore();
-  return (
-       <div className='product-form-modal'>
+    const { closeCampingsModal, createCampings, product, editCampinsFuntion, closeDeleteModal, fetchCampins } = useCampinstStore();
+    const [data, setData] = useState({
+        title: product?.title || "",
+        description: product?.description || "",
+        img_url: product?.img_url || "" /* OPTIONALY */
+    })
+    const handleChangeInput = (e) => {
+        const { name, value } = e.target
+        setData({
+            ...data,
+            [name]: value
+        })
+    }
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        if (product && product.id !== undefined) {
+            editCampinsFuntion(product.id, data)
+        } else {
+            await createCampings(data)
+        }
+
+        await fetchCampins();
+        closeCampingsModal()
+
+    }
+
+
+    return (
+        <div className='product-form-modal'>
             <div className="overlay" onClick={closeCampingsModal}></div>
 
-            <form className="product-form">
+            <form className="product-form" onSubmit={handleSubmit}>
                 <div className="close-button" onClick={closeCampingsModal}>
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g clip-path="url(#clip0_11_9572)">
@@ -25,21 +51,28 @@ const CampinsModal = () => {
                     <div>
                         <label htmlFor="productName">Şəkil ünvanı</label>
 
-                        <input type="text" id="productName" name="productName" required />
+                        <input type="text" id="productName" name="img_url" required />
                     </div>
                     <div>
                         <label htmlFor="productDescription">Başlıq</label>
-                        <input id="productDescription" type="text" name="productDescription" required></input>
+                        <input
+                            id="productDescription"
+                            type="text"
+                            value={data.title}
+                            onChange={handleChangeInput}
+                            name="title"
+                            required
+                        ></input>
                     </div>
                     <div>
                         <label htmlFor="productPrice">Açıqlama</label>
-                        <textarea id="productPrice" name="productPrice" required></textarea>
+                        <textarea id="productPrice" name="description" value={data.description} onChange={handleChangeInput} required></textarea>
                     </div>
                 </div>
                 <Button type="submit" title="Məlumatları yarat" style={{ fontSize: "22px" }} />
             </form>
         </div>
-  )
+    )
 }
 
 export default CampinsModal 

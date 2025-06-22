@@ -20,7 +20,7 @@ interface CategoryStore {
   closeModals: () => void;
 }
 
-export const useCategoryStore = create<CategoryStore>((set, get) => ({
+export const useCategoryStore = create<CategoryStore>((set) => ({
   categories: [],
   selectedCategory: null,
   categoryModal: false,

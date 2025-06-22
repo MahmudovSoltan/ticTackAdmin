@@ -1,7 +1,6 @@
-// store/orderStore.ts
 import { create } from "zustand";
-import axios from "axios";
 import type { Order, OrderStatus } from "../types/Types";
+import { getOrderList, patchOrderStatus } from "../services/orders";
 
 interface OrderStore {
   orders: Order[];
@@ -14,8 +13,8 @@ export const useOrderStore = create<OrderStore>((set, get) => ({
 
   fetchOrders: async () => {
     try {
-      const res = await axios.get<Order[]>("/api/orders"); // öz backend API endpoint-inə uyğunlaşdır
-      set({ orders: res.data });
+      const orders = await getOrderList(); 
+      set({ orders });
     } catch (err) {
       console.error("Failed to fetch orders", err);
     }
@@ -23,14 +22,10 @@ export const useOrderStore = create<OrderStore>((set, get) => ({
 
   updateOrderStatus: async (id, newStatus) => {
     try {
-      const res = await axios.patch<Order>(`/api/orders/${id}/status`, {
-        status: newStatus,
-      });
-
-      // store-u güncəllə
+      const updatedOrder = await patchOrderStatus(id, newStatus);
       set((state) => ({
         orders: state.orders.map((order) =>
-          order.id === id ? res.data : order
+          order.id === id ? updatedOrder as Order : order
         ),
       }));
     } catch (err) {

@@ -1,22 +1,16 @@
-import React from 'react'
 import { useProductStore } from '../../../store/productStore';
-interface Product {
-    no: number;
-    date: string;
-    desc: string;
-    content: string;
-}
+
 import { CiEdit } from "react-icons/ci";
 import { MdOutlineDelete } from 'react-icons/md';
 import '../css/tables.css'
+import type { CreateProductType, Product } from '../../../types/Types';
 const ProductsTable = ({ product }: { product: Product[] }) => {
     const {
-        createProduct,
+        editProduct,
         openDeleteModal
-
     } = useProductStore();
-    const handleEdit = (item: Product) => {
-        createProduct(item);
+    const handleEdit = (id:number,item: CreateProductType) => {
+        editProduct( id,item)
     }
     return (
         <div>
@@ -24,7 +18,7 @@ const ProductsTable = ({ product }: { product: Product[] }) => {
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Date</th>
+                        <th>image</th>
                         <th>Description</th>
                         <th>Content</th>
                         <th></th>
@@ -32,14 +26,15 @@ const ProductsTable = ({ product }: { product: Product[] }) => {
                 </thead>
                 <tbody>
                     {product.map((item) => (
-                        <tr key={item.no}>
-                            <td>{item.no}</td>
-                            <td>{item.date}</td>
-                            <td>{item.desc}</td>
-                            <td>{item.content}</td>
+                        <tr key={item.id}>
+                            <td>{item.id}</td>
+                            <td><img className='table-image' src={item?.img_url
+                            } alt="" /></td>
+                            <td>{item.description}</td>
+                            <td>{item.title}</td>
                             <td className='actions'>
-                                <button className="btn-edit" onClick={() => handleEdit(item)}><CiEdit /></button>
-                                <button className="btn-delete" onClick={() => openDeleteModal()}><MdOutlineDelete />
+                                <button className="btn-edit" onClick={() => handleEdit(item.id,item)}><CiEdit /></button>
+                                <button className="btn-delete" onClick={() => openDeleteModal(item.id)}><MdOutlineDelete />
                                 </button>
                             </td>
                         </tr>

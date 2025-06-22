@@ -3,8 +3,10 @@ import LoginRight from '../../components/login/LoginRight'
 import Logo from '../../components/logo'
 import './css/login.css'
 const Login = () => {
+ 
+  
   return (
-    <div className='container'>
+    <div className='container login_container'>
       <div style={{paddingTop:"30px"}}>
         <Logo />
       </div>

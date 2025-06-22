@@ -1,38 +1,45 @@
-   
-  export interface Product {
-    no: number;
-    date: string;
-    desc: string;
-    content: string;
-}
 
-export interface Category {
-  id: number;
-  name: string;
-  img_url: string;
-  description: string;
-  created_at: string;
-}
 
-// types/Order.ts
-export interface Category {
-  id: number;
-  name: string;
-  img_url: string;
-  description: string;
-  created_at: string;
-}
+
 
 export interface Product {
+  id: number,
+  title: string,
+  img_url: string,
+  description: string,
+  price: string,
+  type: string,
+  created_at: string,
+  category: Category
+}
+
+export interface CreateProductType {
+  title: string,
+  description: string,
+  price: string,
+  type: string, /* Please check button. this is ENUM ProductMeasure*/
+  img_url: string /* OPTIONALY */,
+  category_id: number
+}
+
+export interface Category {
   id: number;
-  title: string;
+  name: string;
   img_url: string;
   description: string;
-  price: string;
-  type: string;
   created_at: string;
-  category: Category;
 }
+
+export interface CampaignsType {
+  id?: number | undefined,
+  title: string,
+  description: string,
+  img_url?: string,
+  created_at?: string
+}
+
+
+
 
 export interface OrderItem {
   id: number;
@@ -40,7 +47,6 @@ export interface OrderItem {
   total_price: string;
   product: Product;
 }
-
 export interface User {
   id: number;
   full_name: string;
@@ -48,7 +54,15 @@ export interface User {
 }
 
 export type OrderStatus = "PENDING" | "SHIPPED" | "DELIVERED" | "CANCELLED";
-
+export interface UserType {
+  id: number,
+  full_name: string,
+  phone: string,
+  address: null | string,
+  img_url: null | string,
+  role: string,
+  created_at: string
+}
 export interface Order {
   id: number;
   orderNumber: string;
@@ -64,3 +78,22 @@ export interface Order {
   user: User;
   items: OrderItem[];
 }
+
+
+export interface AuthStore {
+  accessToken: string | null;
+  refreshToken: string | null;
+  setTokens: (accessToken: string, refreshToken: string) => void;
+  clearTokens: () => void;
+  initializeTokens: () => void;
+  user: Role | null,
+  setUser: (user: Role | null) => void,
+  isInitialized: boolean
+
+}
+
+export interface Role {
+  role: "ADMIN"
+}
+
+export interface loginType { phone: string, password: string }

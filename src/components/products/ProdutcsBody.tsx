@@ -6,25 +6,20 @@ import { useProductStore } from "../../store/productStore";
 import ProductDeleteModal from "../modals/productDeleteModal/ProductDeleteModal";
 import TableHeader from "../../ui/tableHeader";
 
-interface ProductBodyType {
-    products: Product[];
 
-}
-const ProductsBody = ({ products }: ProductBodyType) => {
+const ProductsBody = ({ products }: { products: Product[] }) => {
     const {
         productModal,
         product,
         deleteModal,
-        openProductModal, // assuming this is the function to open the modal
+        openProductModal,
     } = useProductStore();
     return (
         <div className="products-body">
-           <TableHeader title="Məhsullar" onClick={openProductModal} />
+            <TableHeader title="Məhsullar" onClick={openProductModal} />
             <ProductsTable product={products} />
             {productModal && <ProductFormModal product={product} />}
-            {
-                deleteModal && <ProductDeleteModal />
-            }
+            {deleteModal && <ProductDeleteModal />}
         </div>
     )
 }

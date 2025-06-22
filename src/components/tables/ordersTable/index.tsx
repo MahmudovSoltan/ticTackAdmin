@@ -1,5 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import '../css/tables.css'
+import { useOrderStore } from "../../../store/orderStore";
+import type { OrderStatus } from "../../../types/Types";
+import { useShallow } from "zustand/shallow";
+import { FaRegUserCircle } from "react-icons/fa";
 interface Product {
   id: number;
   title: string;
@@ -55,15 +59,22 @@ const statuses = [
 const OrderTable = ({ orders }: { orders: Order[] }) => {
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const [selectedStatus, setSelectedStatus] = useState<{ [id: number]: string }>({});
-
+  const { updateOrderStatus, fetchOrders } = useOrderStore()
   const toggleExpand = (id: number) => {
     setExpandedRow(prev => (prev === id ? null : id));
+
   };
 
-  const handleStatusChange = (orderId: number, newStatus: string) => {
+  const handleStatusChange = (orderId: number, newStatus: OrderStatus) => {
     setSelectedStatus(prev => ({ ...prev, [orderId]: newStatus }));
+    updateOrderStatus(orderId, newStatus)
   };
 
+  console.log(selectedStatus);
+
+  useEffect(() => {
+    fetchOrders()
+  }, [selectedStatus]);
   return (
     <div>
       <table className="products-table">
@@ -79,36 +90,31 @@ const OrderTable = ({ orders }: { orders: Order[] }) => {
           </tr>
         </thead>
         <tbody>
-          {orders.map(order => (
+          {orders?.map(order => (
             <React.Fragment key={order.id}>
               <tr>
-                <td>{order.orderNumber}</td>
+                <td>{order?.orderNumber}</td>
                 <td>
                   <div style={{ display: "flex" }}>
-                    <img
-                      src={order.user.img_url}
-                      alt={order.user.full_name}
-                      style={{ width: 30, height: 30, borderRadius: "50%", marginRight: 8 }}
-                    />
-                    {order.user.full_name}
+                    {order?.user?.full_name}
 
                   </div>
                 </td>
-                <td>{order.phone}</td>
-                <td>{order.address}</td>
-                <td>{order.total} ₼</td>
-                <td>{selectedStatus[order.id] || order.status}</td>
+                <td>{order?.phone}</td>
+                <td>{order?.address}</td>
+                <td>{order?.total} ₼</td>
+                <td>{order?.status}</td>
                 <td>
-                  <div style={{ display: "flex" }}>
+                  <div>
 
-                    <button onClick={() => toggleExpand(order.id)}>Ətraflı</button>
+                    <button onClick={() => toggleExpand(order?.id)}>Ətraflı</button>
                     <div style={{ display: "inline-block", marginLeft: 10, position: "relative" }}>
                       <select
-                        value={selectedStatus[order.id] || order.status}
-                        onChange={(e) => handleStatusChange(order.id, e.target.value)}
+                        value={selectedStatus[order?.id] || order?.status}
+                        onChange={(e) => handleStatusChange(order.id, e.target.value as OrderStatus)}
                       >
-                        {statuses.map(status => (
-                          <option key={status} value={status}>{status.toLocaleLowerCase()}</option>
+                        {statuses?.map((status, i) => (
+                          <option key={i} value={status}>{status?.toLocaleLowerCase()}</option>
                         ))}
                       </select>
                     </div>

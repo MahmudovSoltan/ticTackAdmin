@@ -1,5 +1,8 @@
+import { useShallow } from "zustand/shallow";
+import { useUserStore } from "../../store/userStore";
 import TableHeader from "../../ui/tableHeader";
 import UsersTables from "../tables/userTables";
+import { useEffect } from "react";
 
 const customers = [
     {
@@ -34,10 +37,21 @@ const customers = [
 
 
 const UsersBody = () => {
+    const { users,fetchUsers } = useUserStore(
+        useShallow((state) => ({
+            users: state.users,
+            fetchUsers: state.fetchUsers,
+        }))
+    );
+
+    useEffect(()=>{
+        fetchUsers()
+    },[])
+    
     return (
         <div className="users_body">
-            <TableHeader  title="İstifadəçilər" />
-            <UsersTables customers={customers} />
+            <p>İstifadəçilər</p>
+            <UsersTables customers={users} />
         </div>
     )
 }

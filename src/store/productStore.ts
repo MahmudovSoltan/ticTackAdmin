@@ -1,29 +1,47 @@
 import { create } from "zustand";
-import type { Product } from "../types/Types";
+import type { CreateProductType, Product } from "../types/Types";
+import { createProductsFunc, deleteProduct, editProduct, getProductsList } from "../services/products";
 
 interface ProductStore {
-    product: Product | null;
+    product: CreateProductType | null;
     productModal: boolean;
     deleteModal: boolean;
-    editProduct: (product: Product) => void;
+    productId: number | null;
+    products: Product[];
+    editProduct: (id: number, product: CreateProductType) => void;
     closeProductModal: () => void;
     openProductModal: () => void;
-    createProduct: (product: Product) => void;
+    createProduct: (product: CreateProductType) => Promise<void>;
     closeDeleteModal: () => void;
-    openDeleteModal: () => void;
+    openDeleteModal: (id: number) => void;
+    editProductFunction: (id: number, data: CreateProductType) => Promise<void>;
+    deleteProductFun: (id: number) => Promise<void>;
+    fetchAllProducts: () => Promise<void>
 }
 
 export const useProductStore = create<ProductStore>((set) => ({
     productModal: false,
     deleteModal: false,
     product: null,
-    editProduct: (product: Product) => set({ product, productModal: true }),
+    productId: null,
+    products: [],
+    editProduct: (id: number, product: CreateProductType) => set({ product, productModal: true, productId: id }),
     openProductModal: () => set({ productModal: true }),
-    closeProductModal: () => set({ productModal: false, product: null }),
-    createProduct: (product: Product) => set((state) => ({
-        product: product,
-        productModal: true
-    })),
-    closeDeleteModal: () => set({ deleteModal: false }),
-    openDeleteModal: () => set({ deleteModal: true }),
+    closeProductModal: () => set({ productModal: false, product: null, productId: null }),
+    createProduct: async (data: CreateProductType) => {
+        await createProductsFunc(data)
+    },
+    closeDeleteModal: () => set({ deleteModal: false, productId: null }),
+    openDeleteModal: (id: number) => set({ deleteModal: true, productId: id }),
+    fetchAllProducts: async () => {
+        const products = await getProductsList()
+        set({ products })
+    },
+    editProductFunction: async (id: number, data: CreateProductType) => {
+        await editProduct(id, data)
+    },
+    deleteProductFun: async (id: number) => {
+        await deleteProduct(id)
+    }
+
 }));

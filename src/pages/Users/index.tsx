@@ -1,4 +1,3 @@
-import React from 'react'
 import Header from '../../components/Layout/header/Header'
 import Sidebar from '../../components/Layout/sidebar'
 import UsersBody from '../../components/users/UsersBody'

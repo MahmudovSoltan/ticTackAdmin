@@ -49,18 +49,12 @@ export const useCategoryStore = create<CategoryStore>((set) => ({
   },
 
   updateCategory: async (id, updatedCategory) => {
-    try {
-      const res = await editCtegory(id, updatedCategory);
-      set((state) => ({
-        categories: state.categories.map((cat) =>
-          cat.id === id ? res.data : cat
-        ),
-        categoryModal: false,
-        selectedCategory: null,
-      }));
-    } catch (err) {
-      console.error("Error updating category:", err);
-    }
+    if (!updatedCategory.name || !updatedCategory.description || !updatedCategory.img_url) return;
+    const res = await editCtegory(id, {
+      name: updatedCategory.name,
+      description: updatedCategory.description,
+      img_url: updatedCategory.img_url,
+    });
   },
 
   deleteCategory: async (id) => {

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import OrderTable from "../tables/ordersTable";
 
 import Pagination from "../pagination/pagination";
-import { useAuthStore } from "../../store/authStore";
 import { useShallow } from "zustand/shallow";
 import { useOrderStore } from "../../store/orderStore";
 

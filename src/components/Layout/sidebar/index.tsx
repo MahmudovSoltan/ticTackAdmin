@@ -1,4 +1,3 @@
-import { use } from 'react'
 import { routeList } from '../../../constants/Routes'
 import './css/sidebar.css'
 import { useLocation, useNavigate } from 'react-router-dom'

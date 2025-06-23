@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import '../css/tables.css'
 import { useOrderStore } from "../../../store/orderStore";
-import type { OrderStatus } from "../../../types/Types";
-import { useShallow } from "zustand/shallow";
-import { FaRegUserCircle } from "react-icons/fa";
+import type { OrderStatus } from "../../../types/order.types";
+
 interface Product {
   id: number;
   title: string;

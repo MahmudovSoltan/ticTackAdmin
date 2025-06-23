@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useCategoryStore } from "../../store/categoryStore"
 import TableHeader from "../../ui/tableHeader"
 import CategoryDeledeModal from "../modals/categoryDeleteModal"
@@ -6,11 +6,12 @@ import CategoryFormModal from "../modals/categoryModal"
 import CategoryTable from "../tables/categoriesTable"
 import Pagination from "../pagination/pagination"
 
-const CategoriesBody = ({ categories }) => {
+const CategoriesBody = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 3;
+  const { categoryModal, openCreateModal, openEditModal, closeModals, deleteModal, openDeleteModal, fetchCategories, categories } = useCategoryStore()
 
- 
+
 
   const offset = currentPage * itemsPerPage;
   const currentItems = categories.slice(offset, offset + itemsPerPage);
@@ -19,11 +20,15 @@ const CategoriesBody = ({ categories }) => {
   const handlePageChange = ({ selected }: { selected: number }) => {
     setCurrentPage(selected);
   };
-  const { categoryModal, openCreateModal, openEditModal, closeModals, deleteModal, deleteCategory } = useCategoryStore()
+  useEffect(() => {
+    fetchCategories()
+  }, [])
+  console.log(categories);
+  
   return (
     <div className="category-body">
       <TableHeader onClick={openCreateModal} title="Kategoriyalar" />
-      <CategoryTable categories={currentItems} handleEdit={openEditModal} openDeleteModal={deleteCategory} />
+      <CategoryTable categories={currentItems} handleEdit={openEditModal} openDeleteModal={openDeleteModal} />
 
       {
         categoryModal && <CategoryFormModal onClose={closeModals} />
@@ -31,7 +36,7 @@ const CategoriesBody = ({ categories }) => {
       {
         deleteModal && <CategoryDeledeModal />
       }
-        <Pagination onPageChange={handlePageChange} pageCount={pageCount} forcePage={currentPage}/>
+      <Pagination onPageChange={handlePageChange} pageCount={pageCount} forcePage={currentPage} />
     </div>
   )
 }

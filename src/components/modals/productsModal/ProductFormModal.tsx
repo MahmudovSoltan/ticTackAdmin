@@ -1,18 +1,19 @@
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import { useProductStore } from "../../../store/productStore";
-import type { CreateProductType } from "../../../types/Types";
+import { ProductMeasure, type CreateProductType } from "../../../types/Types";
 import Button from "../../../ui/button";
 import { productSchema } from "../../../utils/validations";
+import { useCategoryStore } from "../../../store/categoryStore";
+import { useShallow } from "zustand/shallow";
+import { useEffect } from "react";
 
 const ProductFormModal = ({ product }: { product: CreateProductType | null }) => {
     const { closeProductModal, createProduct, editProductFunction, productId, fetchAllProducts } = useProductStore();
+    const { categories, fetchCategories } = useCategoryStore(useShallow((state) => ({
+        categories: state.categories,
+        fetchCategories: state.fetchCategories,
+    })))
 
-    const categories = [
-        { id: 1, name: "Meyvə" },
-        { id: 2, name: "Tərəvəz" },
-        { id: 3, name: "Ət məhsulları" }
-    ];
 
     const validationSchema = productSchema;
 
@@ -23,7 +24,7 @@ const ProductFormModal = ({ product }: { product: CreateProductType | null }) =>
             price: String(product?.price ?? "") || "",
             type: product?.type || "kg",
             img_url: product?.img_url || "",
-            category_id: product?.category?.id || 1,
+            category_id: product?.category_id || 1,
         },
         validationSchema,
         onSubmit: async (values) => {
@@ -42,6 +43,11 @@ const ProductFormModal = ({ product }: { product: CreateProductType | null }) =>
         },
     });
 
+
+
+    useEffect(() => {
+        fetchCategories()
+    }, [])
     return (
         <div className='product-form-modal'>
             <div className="overlay" onClick={closeProductModal}></div>
@@ -112,9 +118,16 @@ const ProductFormModal = ({ product }: { product: CreateProductType | null }) =>
                             onBlur={formik.handleBlur}
                             required
                         >
-                            <option value="kg">Kg</option>
-                            <option value="pcs">Ədəd</option>
-                            <option value="lt">Litr</option>
+                            <option value={ProductMeasure.KG}>Kiloqram</option>
+                            <option value={ProductMeasure.GR}>Qram</option>
+                            <option value={ProductMeasure.LITRE}>Litr</option>
+                            <option value={ProductMeasure.ML}>Millilitr</option>
+                            <option value={ProductMeasure.METER}>Metr</option>
+                            <option value={ProductMeasure.CM}>Santimetr</option>
+                            <option value={ProductMeasure.MM}>Millimetr</option>
+                            <option value={ProductMeasure.PIECE}>Ədəd</option>
+                            <option value={ProductMeasure.PACKET}>Paket</option>
+                            <option value={ProductMeasure.BOX}>Qutu</option>
                         </select>
                         {formik.touched.type && formik.errors.type && (
                             <div className="form-error">{formik.errors.type}</div>
@@ -167,3 +180,6 @@ const ProductFormModal = ({ product }: { product: CreateProductType | null }) =>
 };
 
 export default ProductFormModal;
+
+
+

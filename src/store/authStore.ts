@@ -1,6 +1,7 @@
 // store/authStore.ts
 import { create } from "zustand";
-import type { AuthStore } from "../types/Types";
+import type { AuthStore } from "../types/auth.types";
+
 
 
 

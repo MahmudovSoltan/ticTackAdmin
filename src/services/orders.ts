@@ -1,7 +1,7 @@
-import type { Order, OrderStatus } from "../types/Types";
+import type { Order, OrderStatus } from "../types/order.types";
 import axiosInstance from "../utils/axiosInstance";
 
-export const getOrderList = async () => {
+export const getOrderList = async (): Promise<Order[] | undefined>  => {
     try {
         const response = await axiosInstance.get("/api/tiktak/orders/admin")
         return response.data.data

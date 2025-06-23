@@ -81,7 +81,7 @@ const Categories = () => {
        <Header />
       <div className="categories_content container">
         <Sidebar />
-       <CategoriesBody categories={categories}/>
+       <CategoriesBody categor={categories}/>
       </div>
     </div>
   )

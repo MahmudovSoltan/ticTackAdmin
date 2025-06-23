@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import type { CreateProductType, Product } from "../types/Types";
 import { createProductsFunc, deleteProduct, editProduct, getProductsList } from "../services/products";
+import type { CreateProductType, Product } from "../types/product.types";
 
 interface ProductStore {
     product: CreateProductType | null;

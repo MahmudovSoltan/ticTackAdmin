@@ -1,6 +1,7 @@
 import { create } from "zustand";
-import type { Order, OrderStatus } from "../types/Types";
+
 import { getOrderList, patchOrderStatus } from "../services/orders";
+import type { Order, OrderStatus } from "../types/order.types";
 
 interface OrderStore {
   orders: Order[];
@@ -8,7 +9,7 @@ interface OrderStore {
   updateOrderStatus: (id: number, newStatus: OrderStatus) => Promise<void>;
 }
 
-export const useOrderStore = create<OrderStore>((set, get) => ({
+export const useOrderStore = create<OrderStore>((set) => ({
   orders: [],
 
   fetchOrders: async () => {

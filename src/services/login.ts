@@ -1,9 +1,9 @@
 import { toast } from "react-toastify";
 import { useAuthStore } from "../store/authStore";
 import axiosInstance from "../utils/axiosInstance";
-import type { loginType } from "../types/Types";
+import type { loginResponseType, loginType } from "../types/Types";
 
-export const login = async (data: loginType) => {
+export const login = async (data: loginType): Promise<loginResponseType | undefined> => {
     try {
         const response = await axiosInstance.post("/api/tiktak/auth/admin/login", data);
 

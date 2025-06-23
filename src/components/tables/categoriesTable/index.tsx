@@ -25,7 +25,7 @@ const CategoryTable = ({ categories, handleEdit, openDeleteModal }: Props) => {
           </tr>
         </thead>
         <tbody>
-          {categories.map((item) => (
+          {categories?.map((item) => (
             <tr key={item.id} >
               <td >{item.id}</td>
               <td>{item.name}</td>

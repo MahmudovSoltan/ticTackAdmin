@@ -2,17 +2,18 @@ import { toast } from "react-toastify";
 import type { CampaignsType } from "../types/Types";
 import axiosInstance from "../utils/axiosInstance";
 
-export const getCampingsList = async () => {
+export const getCampingsList = async (): Promise<CampaignsType[] | undefined> => {
     try {
         const response = await axiosInstance.get("/api/tiktak/admin/campaigns");
 
         return response.data.data;
     } catch (err) {
         console.error(err);
+        return undefined;
     }
 };
 
-export const createCampingsFunc = async (data: CampaignsType) => {
+export const createCampingsFunc = async (data: CampaignsType): Promise<CampaignsType | undefined> => {
     try {
         const response = await axiosInstance.post("/api/tiktak/admin/campaign", data);
         toast.success("Kampaniya uğurla yaradıldı");

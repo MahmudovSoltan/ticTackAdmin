@@ -1,7 +1,6 @@
 import { create } from "zustand";
-import type { CampaignsType } from "../types/Types";
 import { createCampingsFunc, deleteCampaign, getCampingsList, puthCamping } from "../services/campins";
-import { data } from "react-router-dom";
+import type { CampaignsType } from "../types/campaign.types";
 
 interface CampinstStoreType {
     campingsModal: boolean,

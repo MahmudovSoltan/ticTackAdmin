@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import type { UserType, } from "../types/Types";
 import { getUserList } from "../services/user";
+import type { UserType } from "../types/user.types";
 interface OrderStore {
     users: UserType[];
     fetchUsers: () => Promise<void>;

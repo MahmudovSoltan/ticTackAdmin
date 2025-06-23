@@ -24,7 +24,7 @@ const Products = () => {
       <Header />
       <div className="content container">
         <Sidebar />
-        <ProdutcsBody products={products} />
+        <ProdutcsBody products={products ?? []} />
       </div>
     </div>
   )

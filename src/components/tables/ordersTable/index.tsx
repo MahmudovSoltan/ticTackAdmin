@@ -1,4 +1,4 @@
-import  { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import '../css/tables.css'
 import { useOrderStore } from "../../../store/orderStore";
 import type { OrderStatus } from "../../../types/order.types";

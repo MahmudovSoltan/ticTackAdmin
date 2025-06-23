@@ -3,13 +3,15 @@ import Button from '../../../ui/button'
 import { useCampinstStore } from '../../../store/campaignsStore';
 
 const CampinsModal = () => {
-    const { closeCampingsModal, createCampings, product, editCampinsFuntion, closeDeleteModal, fetchCampins } = useCampinstStore();
+    const { closeCampingsModal, createCampings, product, editCampinsFuntion, fetchCampins } = useCampinstStore();
     const [data, setData] = useState({
         title: product?.title || "",
         description: product?.description || "",
         img_url: product?.img_url || "" /* OPTIONALY */
     })
-    const handleChangeInput = (e) => {
+    const handleChangeInput = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
         const { name, value } = e.target
         setData({
             ...data,

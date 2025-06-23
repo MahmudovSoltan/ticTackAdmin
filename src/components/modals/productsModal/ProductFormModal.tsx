@@ -1,6 +1,7 @@
 import { useFormik } from "formik";
 import { useProductStore } from "../../../store/productStore";
-import { ProductMeasure, type CreateProductType } from "../../../types/Types";
+// Remove 'type' from ProductMeasure import to ensure it's imported as a value
+import type { CreateProductType } from "../../../types/Types";
 import Button from "../../../ui/button";
 import { productSchema } from "../../../utils/validations";
 import { useCategoryStore } from "../../../store/categoryStore";
@@ -118,16 +119,16 @@ const ProductFormModal = ({ product }: { product: CreateProductType | null }) =>
                             onBlur={formik.handleBlur}
                             required
                         >
-                            <option value={ProductMeasure.KG}>Kiloqram</option>
-                            <option value={ProductMeasure.GR}>Qram</option>
-                            <option value={ProductMeasure.LITRE}>Litr</option>
-                            <option value={ProductMeasure.ML}>Millilitr</option>
-                            <option value={ProductMeasure.METER}>Metr</option>
-                            <option value={ProductMeasure.CM}>Santimetr</option>
-                            <option value={ProductMeasure.MM}>Millimetr</option>
-                            <option value={ProductMeasure.PIECE}>Ədəd</option>
-                            <option value={ProductMeasure.PACKET}>Paket</option>
-                            <option value={ProductMeasure.BOX}>Qutu</option>
+                            <option value='kg'>Kiloqram</option>
+                            <option value="gr">Qram</option>
+                            <option value="litre">Litr</option>
+                            <option value="ml">Millilitr</option>
+                            <option value="meter">Metr</option>
+                            <option value="cm">Santimetr</option>
+                            <option value="mm">Millimetr</option>
+                            <option value="piece">Ədəd</option>
+                            <option value="packet">Paket</option>
+                            <option value="box">Qutu</option>
                         </select>
                         {formik.touched.type && formik.errors.type && (
                             <div className="form-error">{formik.errors.type}</div>

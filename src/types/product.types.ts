@@ -21,17 +21,16 @@ export interface CreateProductType {
 }
 
 
-export enum ProductMeasure {
-  KG = 'kg',
-  GR = 'gr',
-  LITRE = 'litre',
-  ML = 'ml',
-  METER = 'meter',
-  CM = 'cm',
-  MM = 'mm',
-  PIECE = 'piece',
-  PACKET = 'packet',
-  BOX = 'box',
-}
+export type ProductMeasure =
+  | 'kg'
+  | 'gr'
+  | 'litre'
+  | 'ml'
+  | 'meter'
+  | 'cm'
+  | 'mm'
+  | 'piece'
+  | 'packet'
+  | 'box';
 
 

@@ -1,5 +1,6 @@
+import type { UserType } from "../../../types/user.types"
 
-const UsersTables = ({customers}) => {
+const UsersTables = ({ customers }: { customers: UserType[] }) => {
   return (
      <div>
       <table className="products-table">

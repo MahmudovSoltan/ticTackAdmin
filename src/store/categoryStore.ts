@@ -50,7 +50,7 @@ export const useCategoryStore = create<CategoryStore>((set) => ({
 
   updateCategory: async (id, updatedCategory) => {
     if (!updatedCategory.name || !updatedCategory.description || !updatedCategory.img_url) return;
-    const res = await editCtegory(id, {
+    await editCtegory(id, {
       name: updatedCategory.name,
       description: updatedCategory.description,
       img_url: updatedCategory.img_url,

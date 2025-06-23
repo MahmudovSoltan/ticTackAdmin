@@ -7,7 +7,7 @@ interface ProductStore {
     productModal: boolean;
     deleteModal: boolean;
     productId: number | null;
-    products: Product[];
+    products: Product[] | null;
     editProduct: (id: number, product: CreateProductType) => void;
     closeProductModal: () => void;
     openProductModal: () => void;

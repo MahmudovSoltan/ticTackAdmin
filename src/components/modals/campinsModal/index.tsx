@@ -1,80 +1,147 @@
-import { useState } from 'react'
-import Button from '../../../ui/button'
-import { useCampinstStore } from '../../../store/campaignsStore';
+import { useRef, useState } from "react";
+import { FiUpload } from "react-icons/fi";
+import Button from "../../../ui/button";
+import { useCampinstStore } from "../../../store/campaignsStore";
+import { uploadImage } from "../../../services/uploadImage";
+
+const MAX_SIZE_MB = 1;
 
 const CampinsModal = () => {
-    const { closeCampingsModal, createCampings, product, editCampinsFuntion, fetchCampins } = useCampinstStore();
-    const [data, setData] = useState({
-        title: product?.title || "",
-        description: product?.description || "",
-        img_url: product?.img_url || "" /* OPTIONALY */
-    })
-    const handleChangeInput = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
-        const { name, value } = e.target
-        setData({
-            ...data,
-            [name]: value
-        })
+  const {
+    closeCampingsModal,
+    createCampings,
+    product,
+    editCampinsFuntion,
+    fetchCampins,
+  } = useCampinstStore();
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const [preview, setPreview] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [data, setData] = useState({
+    title: product?.title ?? "",
+    description: product?.description ?? "",
+    img_url: product?.img_url ?? "",
+  });
+
+  /* ------ text inputlar ------ */
+  const handleChangeInput = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setData((d) => ({ ...d, [name]: value }));
+  };
+
+  /* ------ file seçildi ------ */
+  const handleFileChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // 1️⃣ ölçüyə nəzarət
+    if (file.size / 1024 / 1024 > MAX_SIZE_MB) {
+      alert("Şəkil 1 MB-dan böyükdür!");
+      return;
     }
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        if (product && product.id !== undefined) {
-            editCampinsFuntion(product.id, data)
-        } else {
-            await createCampings(data)
-        }
 
-        await fetchCampins();
-        closeCampingsModal()
+    // 2️⃣ ön görünüş
+    setPreview(URL.createObjectURL(file));
 
+    // 3️⃣ serverə yüklə
+    try {
+      setIsUploading(true);
+      const url = await uploadImage(file);          // ⬅️  API
+      setData((d) => ({ ...d, img_url: url }));     // url state-ə yazılır
+    } catch (err) {
+      console.error(err);
+      alert("Şəkli yükləmək mümkün olmadı!");
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  /* ------ form göndərildi ------ */
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log(data);
+    // hələ upload gedirsə bloka sal
+    if (isUploading) {
+      alert("Zəhmət olmasa şəkil yüklənməsini gözləyin…");
+      return;
+    }
+
+    // img_url boş ola bilməz
+    if (!data.img_url) {
+      alert("Şəkil yükləmək mütləqdir!");
+      return;
+    }
+
+    if (product?.id) {
+      await editCampinsFuntion(product.id, data);
+    } else {
+      await createCampings(data);
     }
 
 
-    return (
-        <div className='product-form-modal'>
-            <div className="overlay" onClick={closeCampingsModal}></div>
+    await fetchCampins();
+    closeCampingsModal();
+  };
 
-            <form className="product-form" onSubmit={handleSubmit}>
-                <div className="close-button" onClick={closeCampingsModal}>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g clip-path="url(#clip0_11_9572)">
-                            <path d="M9.46585 8.01364L15.6959 1.78336C16.1014 1.37811 16.1014 0.722866 15.6959 0.317612C15.2907 -0.0876416 14.6355 -0.0876416 14.2302 0.317612L7.99992 6.54789L1.76983 0.317612C1.36439 -0.0876416 0.709336 -0.0876416 0.304083 0.317612C-0.101361 0.722866 -0.101361 1.37811 0.304083 1.78336L6.53417 8.01364L0.304083 14.2439C-0.101361 14.6492 -0.101361 15.3044 0.304083 15.7097C0.506045 15.9118 0.771596 16.0134 1.03696 16.0134C1.30232 16.0134 1.56768 15.9118 1.76983 15.7097L7.99992 9.47939L14.2302 15.7097C14.4323 15.9118 14.6977 16.0134 14.9631 16.0134C15.2284 16.0134 15.4938 15.9118 15.6959 15.7097C16.1014 15.3044 16.1014 14.6492 15.6959 14.2439L9.46585 8.01364Z" fill="#1A1D28" />
-                        </g>
-                        <defs>
-                            <clipPath id="clip0_11_9572">
-                                <rect width="16" height="16" fill="white" />
-                            </clipPath>
-                        </defs>
-                    </svg>
-                </div>
-                <div className="product-form-content">
-                    <div>
-                        <label htmlFor="productName">Şəkil ünvanı</label>
+  return (
+    <div className="product-form-modal">
+      <div className="overlay" onClick={closeCampingsModal}></div>
 
-                        <input type="text" id="productName" name="img_url" required />
-                    </div>
-                    <div>
-                        <label htmlFor="productDescription">Başlıq</label>
-                        <input
-                            id="productDescription"
-                            type="text"
-                            value={data.title}
-                            onChange={handleChangeInput}
-                            name="title"
-                            required
-                        ></input>
-                    </div>
-                    <div>
-                        <label htmlFor="productPrice">Açıqlama</label>
-                        <textarea id="productPrice" name="description" value={data.description} onChange={handleChangeInput} required></textarea>
-                    </div>
-                </div>
-                <Button type="submit" title="Məlumatları yarat" style={{ fontSize: "22px" }} />
-            </form>
+      <form className="product-form" onSubmit={handleSubmit}>
+        {/* ——— Şəkil seçimi ——— */}
+        <div className="product-image-url">
+          <label>Şəkil</label>
+
+          <button
+            type="button"
+            onClick={() => inputRef.current?.click()}
+            className="product-image-url-button"
+            disabled={isUploading}
+          >
+            <FiUpload size={24} />
+          </button>
+
+          <input
+            type="file"
+            accept="image/*"
+            ref={inputRef}
+            onChange={handleFileChange}
+            style={{ display: "none" }}
+          />
         </div>
-    )
-}
 
-export default CampinsModal 
+        {/* ——— Digər inputlar ——— */}
+        <label>Başlıq</label>
+        <input
+          name="title"
+          value={data.title}
+          onChange={handleChangeInput}
+          required
+        />
+
+        <label>Açıqlama</label>
+        <textarea
+          name="description"
+          value={data.description}
+          onChange={handleChangeInput}
+          required
+        />
+
+        {/* ——— Submit ——— */}
+        <Button
+          type="submit"
+          title={product ? "Dəyişiklikləri yadda saxla" : "Məlumatları yarat"}
+          disabled={isUploading}
+        />
+      </form>
+    </div>
+  );
+};
+
+export default CampinsModal;

@@ -6,10 +6,11 @@ interface ButtonProps {
     style?: React.CSSProperties;
     className?: string;
     type?: "button" | "submit" | "reset";
+    disabled?:boolean
 }
-const Button = ({ title, onClick, style, className, type }: ButtonProps) => {
+const Button = ({ title, onClick, style, className, type ,disabled}: ButtonProps) => {
     return (
-        <button className={`custom-button ${className}`} onClick={onClick} style={style} type={type || "button"}>
+        <button  disabled={disabled} className={`custom-button ${className}`}  onClick={onClick} style={style} type={type || "button"}>
             {title}
         </button>
     )

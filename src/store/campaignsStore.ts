@@ -36,17 +36,23 @@ export const useCampinstStore = create<CampinstStoreType>((set) => ({
             const campoings = await getCampingsList();
             set({ campoings });
         } catch (err) {
-            console.error("Failed to fetch orders", err);
+            console.error("Failed to fetch campings", err);
         }
     },
     createCampings: async (data) => {
-        createCampingsFunc(data)
+        await createCampingsFunc(data);
+        await useCampinstStore.getState().fetchCampins();
     },
     editCampinsFuntion: async (id: number, data: CampaignsType) => {
-        await puthCamping(id, data)
+        await puthCamping(id, data);
+        await useCampinstStore.getState().fetchCampins();
     },
     deleteCampaignFunc: async (id: number) => {
-        await deleteCampaign(id)
-     
+        await deleteCampaign(id);
+        await useCampinstStore.getState().fetchCampins();
     }
-}))
+}));
+
+function fetchCampins() {
+    throw new Error("Function not implemented.");
+}

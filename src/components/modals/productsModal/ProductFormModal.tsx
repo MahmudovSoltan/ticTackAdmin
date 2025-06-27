@@ -6,17 +6,52 @@ import Button from "../../../ui/button";
 import { productSchema } from "../../../utils/validations";
 import { useCategoryStore } from "../../../store/categoryStore";
 import { useShallow } from "zustand/shallow";
-import { useEffect } from "react";
-
+import { useEffect, useRef, useState } from "react";
+import { uploadImage } from "../../../services/uploadImage";
+import { FiUpload } from "react-icons/fi";
+const MAX_SIZE_MB = 1;
 const ProductFormModal = ({ product }: { product: CreateProductType | null }) => {
     const { closeProductModal, createProduct, editProductFunction, productId, fetchAllProducts } = useProductStore();
     const { categories, fetchCategories } = useCategoryStore(useShallow((state) => ({
         categories: state.categories,
         fetchCategories: state.fetchCategories,
     })))
+    const [preview, setPreview] = useState<string | null>(null);
+    const [isUploading, setIsUploading] = useState(false);
+
+    const inputRef = useRef<HTMLInputElement>(null);
 
 
     const validationSchema = productSchema;
+
+    /* ------ file seçildi ------ */
+    const handleFileChange = async (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        // 1️⃣ ölçüyə nəzarət
+        if (file.size / 1024 / 1024 > MAX_SIZE_MB) {
+            alert("Şəkil 1 MB-dan böyükdür!");
+            return;
+        }
+
+        // 2️⃣ ön görünüş
+        setPreview(URL.createObjectURL(file));
+
+        // 3️⃣ serverə yüklə
+        try {
+            setIsUploading(true);
+            const url = await uploadImage(file);          // ⬅️  API
+            formik.setFieldValue("img_url", url);           // url state-ə yazılır
+        } catch (err) {
+            console.error(err);
+            alert("Şəkli yükləmək mümkün olmadı!");
+        } finally {
+            setIsUploading(false);
+        }
+    };
 
     const formik = useFormik({
         initialValues: {
@@ -136,20 +171,35 @@ const ProductFormModal = ({ product }: { product: CreateProductType | null }) =>
                     </div>
 
                     {/* Image URL */}
-                    <div>
-                        <label htmlFor="img_url">Şəkil ünvanı (opsional)</label>
+                    <div className="product-image-url">
+                        <label>Şəkil</label>
+
+                        <button
+                            type="button"
+                            onClick={() => inputRef.current?.click()}
+                            className="product-image-url-button"
+                            disabled={isUploading}
+                        >
+                            <FiUpload size={24} />
+                        </button>
+
                         <input
-                            type="text"
-                            id="img_url"
-                            name="img_url"
-                            value={formik.values.img_url}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
+                            type="file"
+                            accept="image/*"
+                            ref={inputRef}
+                            onChange={handleFileChange}
+                            style={{ display: "none" }}
                         />
-                        {formik.touched.img_url && formik.errors.img_url && (
-                            <div className="form-error">{formik.errors.img_url}</div>
-                        )}
                     </div>
+                    {(preview || product?.img_url) && (
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                            <img
+                                src={preview || product?.img_url}
+                                alt="Şəkil ön görünüşü"
+                                style={{ width: 120, height: 120, objectFit: "cover", borderRadius: 6, marginTop: 8 }}
+                            />
+                        </div>
+                    )}
 
                     {/* Category */}
                     <div>
@@ -158,7 +208,9 @@ const ProductFormModal = ({ product }: { product: CreateProductType | null }) =>
                             id="category_id"
                             name="category_id"
                             value={formik.values.category_id}
-                            onChange={formik.handleChange}
+                            onChange={(e) =>
+                                formik.setFieldValue("category_id", Number(e.target.value)) // ⬅️ Number(...)
+                            }
                             onBlur={formik.handleBlur}
                             required
                         >

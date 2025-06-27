@@ -31,6 +31,7 @@ const CategoryTable = ({ categories, handleEdit, openDeleteModal }: Props) => {
               <td>{item.name}</td>
               <td >
                 <img
+                className='table-image'
                   src={item.img_url}
                   alt={item.name}
                  

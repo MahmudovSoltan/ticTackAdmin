@@ -5,6 +5,8 @@ import type { Product } from "../../types/Types";
 import { useProductStore } from "../../store/productStore";
 import ProductDeleteModal from "../modals/productDeleteModal/ProductDeleteModal";
 import TableHeader from "../../ui/tableHeader";
+import { useState } from "react";
+import Pagination from "../pagination/pagination";
 
 
 const ProductsBody = ({ products }: { products: Product[] }) => {
@@ -14,12 +16,26 @@ const ProductsBody = ({ products }: { products: Product[] }) => {
         deleteModal,
         openProductModal,
     } = useProductStore();
+
+      const [currentPage, setCurrentPage] = useState(0);
+      const itemsPerPage = 3;
+    
+    
+    
+      const offset = currentPage * itemsPerPage;
+      const currentItems = products.slice(offset, offset + itemsPerPage);
+      const pageCount = Math.ceil(products.length / itemsPerPage);
+    
+      const handlePageChange = ({ selected }: { selected: number }) => {
+        setCurrentPage(selected);
+      };
     return (
         <div className="products-body">
             <TableHeader title="Məhsullar" onClick={openProductModal} />
-            <ProductsTable product={products} />
+            <ProductsTable product={currentItems} />
             {productModal && <ProductFormModal product={product} />}
             {deleteModal && <ProductDeleteModal />}
+               <Pagination onPageChange={handlePageChange} pageCount={pageCount} forcePage={currentPage} />
         </div>
     )
 }

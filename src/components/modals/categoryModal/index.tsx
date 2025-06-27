@@ -1,20 +1,55 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useCategoryStore } from "../../../store/categoryStore";
 import Button from "../../../ui/button";
+import { uploadImage } from "../../../services/uploadImage";
+import { FiUpload } from "react-icons/fi";
 
- // Öz button komponentindirsə düz yol ver
+// Öz button komponentindirsə düz yol ver
 
 interface Props {
   onClose: () => void;
 }
 
+const MAX_SIZE_MB = 1;
 const CategoryFormModal = ({ onClose }: Props) => {
   const { selectedCategory, createCategory, updateCategory } = useCategoryStore();
+  const inputRef = useRef<HTMLInputElement>(null);
 
+  const [preview, setPreview] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
   const [name, setName] = useState("");
   const [imgUrl, setImgUrl] = useState("");
   const [description, setDescription] = useState("");
 
+
+  /* ------ file seçildi ------ */
+  const handleFileChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // 1️⃣ ölçüyə nəzarət
+    if (file.size / 1024 / 1024 > MAX_SIZE_MB) {
+      alert("Şəkil 1 MB-dan böyükdür!");
+      return;
+    }
+
+    // 2️⃣ ön görünüş
+    setPreview(URL.createObjectURL(file));
+
+    // 3️⃣ serverə yüklə
+    try {
+      setIsUploading(true);
+      const url = await uploadImage(file);          // ⬅️  API
+      setImgUrl(url);     // url state-ə yazılır
+    } catch (err) {
+      console.error(err);
+      alert("Şəkli yükləmək mümkün olmadı!");
+    } finally {
+      setIsUploading(false);
+    }
+  };
   useEffect(() => {
     if (selectedCategory) {
       setName(selectedCategory.name);
@@ -68,16 +103,37 @@ const CategoryFormModal = ({ onClose }: Props) => {
 
         <div className="product-form-content">
           <div>
-            <label htmlFor="categoryImg">Şəkil ünvanı</label>
-            <input
-              type="text"
-              id="categoryImg"
-              name="imgUrl"
-              value={imgUrl}
-              onChange={(e) => setImgUrl(e.target.value)}
-              required
-            />
+            <div className="product-image-url">
+              <label>Şəkil</label>
+
+              <button
+                type="button"
+                onClick={() => inputRef.current?.click()}
+                className="product-image-url-button"
+                disabled={isUploading}
+              >
+                <FiUpload size={24} />
+              </button>
+
+              <input
+                type="file"
+                accept="image/*"
+                ref={inputRef}
+                onChange={handleFileChange}
+                style={{ display: "none" }}
+              />
+            </div>
+
           </div>
+             {(preview || selectedCategory?.img_url) && (
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                            <img
+                                src={preview || selectedCategory?.img_url}
+                                alt="Şəkil ön görünüşü"
+                                style={{ width: 120, height: 120, objectFit: "cover", borderRadius: 6, marginTop: 8 }}
+                            />
+                        </div>
+                    )}
           <div>
             <label htmlFor="categoryName">Başlıq</label>
             <input

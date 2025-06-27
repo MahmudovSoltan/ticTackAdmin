@@ -9,7 +9,7 @@ const MAX_SIZE_MB = 1;
 const CampinsModal = () => {
   const {
     closeCampingsModal,
-    createCampings,
+    createCampings, 
     product,
     editCampinsFuntion,
     fetchCampins,
@@ -114,6 +114,17 @@ const CampinsModal = () => {
             onChange={handleFileChange}
             style={{ display: "none" }}
           />
+        </div>
+        <div>
+           {(preview || product?.img_url) && (
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                            <img
+                                src={preview || product?.img_url}
+                                alt="Şəkil ön görünüşü"
+                                style={{ width: 120, height: 120, objectFit: "cover", borderRadius: 6, marginTop: 8 }}
+                            />
+                        </div>
+                    )}
         </div>
 
         {/* ——— Digər inputlar ——— */}

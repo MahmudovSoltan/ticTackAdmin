@@ -43,6 +43,7 @@ export const useCategoryStore = create<CategoryStore>((set) => ({
           categoryModal: false,
         }));
       }
+      await useCategoryStore.getState().fetchCategories()
     } catch (err) {
       console.error("Error creating category:", err);
     }

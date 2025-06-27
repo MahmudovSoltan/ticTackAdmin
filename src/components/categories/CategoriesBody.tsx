@@ -7,9 +7,9 @@ import CategoryTable from "../tables/categoriesTable"
 import Pagination from "../pagination/pagination"
 
 const CategoriesBody = () => {
+  const { categoryModal, openCreateModal, openEditModal, closeModals, deleteModal, openDeleteModal, fetchCategories, categories } = useCategoryStore()
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 3;
-  const { categoryModal, openCreateModal, openEditModal, closeModals, deleteModal, openDeleteModal, fetchCategories, categories } = useCategoryStore()
 
 
 

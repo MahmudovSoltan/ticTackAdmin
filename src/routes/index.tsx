@@ -38,6 +38,7 @@ const MainRouter = () => {
                             </ProtectedRoute>
                         }
                     />
+                    
                     <Route
                         path={ROUTE.PRODUCTS}
                         element={

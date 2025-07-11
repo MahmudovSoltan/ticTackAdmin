@@ -53,6 +53,4 @@ export const useCampinstStore = create<CampinstStoreType>((set) => ({
     }
 }));
 
-function fetchCampins() {
-    throw new Error("Function not implemented.");
-}
+

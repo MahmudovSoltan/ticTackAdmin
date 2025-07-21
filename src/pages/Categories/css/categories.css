@@ -8,3 +8,7 @@
   border-radius: 10px;
   width: 100%;
 }
+.product_table_contianer{
+  width: 100%;
+  overflow: auto;
+}

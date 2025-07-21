@@ -8,3 +8,12 @@
   border-radius: 10px;
   width: 100%;
 }
+.order_table_container{
+  width: 900px;
+  overflow: auto;
+}
+.order_table_actions{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}

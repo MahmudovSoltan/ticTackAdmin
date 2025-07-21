@@ -12,7 +12,7 @@ interface Props {
 
 const CategoryTable = ({ categories, handleEdit, openDeleteModal }: Props) => {
   return (
-    <div >
+    <div className='product_table_contianer' >
       <table className='products-table'>
         <thead>
           <tr>

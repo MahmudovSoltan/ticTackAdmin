@@ -2,7 +2,6 @@ body {
   background-color: var(--color-bg-light);
 }
 .content {
-
   height: 100%;
 }
 .content {
@@ -27,7 +26,7 @@ body {
   align-items: center;
   justify-content: center;
 }
-.form-container{
+.form-container {
   width: 100%;
   height: 100%;
   padding: 30px;
@@ -36,25 +35,39 @@ body {
   align-items: center;
   justify-content: center;
 }
-.overlay{
+.overlay {
   position: absolute;
   width: 100%;
   height: 100%;
   left: 0;
   top: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.3);
 }
 .product-form {
   width: 100%;
   max-width: 600px;
   background: var(--color-white);
-  padding: 23px 45px;
+  padding: 45px;
   border-radius: 10px;
   z-index: 10;
   margin-top: 30px;
-  height: 95%;
+  height: max-content;
   overflow: auto;
   margin-bottom: 50px;
+}
+.product_modal_container {
+  height: 95%;
+  overflow: auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding-top: 200px;
+  min-width: 500px;
+}
+.product_modal_container .product-form {
+  margin-top: 50px;
 }
 .close-button {
   display: flex;
@@ -96,7 +109,7 @@ body {
   height: 100px;
   /* margin-bottom: 35px; */
 }
-.product-delete-modal{
+.product-delete-modal {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -107,7 +120,7 @@ body {
   align-items: center;
   justify-content: center;
 }
-.product-delete-content{
+.product-delete-content {
   width: 600px;
   display: flex;
   flex-direction: column;
@@ -117,9 +130,8 @@ body {
   padding: 23px 45px;
   border-radius: 10px;
   z-index: 10;
-  
 }
-.product-delete-buttons{
+.product-delete-buttons {
   display: flex;
   width: 100%;
   align-items: center;
@@ -127,8 +139,8 @@ body {
   gap: 20px;
   margin-top: 20px;
 }
-.cancel{
-  background-color: var(  --color-white) !important;
-  border: 1px solid #9F9F9F59;
-  color: #9F9F9F59;
+.cancel {
+  background-color: var(--color-white) !important;
+  border: 1px solid #9f9f9f59;
+  color: #9f9f9f59;
 }

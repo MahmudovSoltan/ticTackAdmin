@@ -20,6 +20,7 @@
   border-radius: 10px;
   z-index: 10;
 }
+
 .product-delete-buttons {
   display: flex;
   width: 100%;

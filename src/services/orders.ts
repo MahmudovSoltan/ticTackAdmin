@@ -16,6 +16,7 @@ export const patchOrderStatus = async (id: number, status: OrderStatus): Promise
 
     try {
         const res = await axiosInstance.put(`/api/tiktak/orders/admin/${id}/status`, { status });
+        getOrderList()
         return res.data;
     } catch (err) {
         console.log(err);

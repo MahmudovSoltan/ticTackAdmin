@@ -10,7 +10,7 @@ const OrdersBody = () => {
   const [currentPage, setCurrentPage] = useState(0);
 
 
- const { orders, fetchOrders } = useOrderStore(
+  const { orders, fetchOrders } = useOrderStore(
     useShallow((state) => ({
       orders: state.orders,
       fetchOrders: state.fetchOrders
@@ -30,12 +30,14 @@ const OrdersBody = () => {
 
 
   useEffect(() => {
-       fetchOrders()
+    fetchOrders()
   }, []);
   return (
     <div className="orders-body">
       <p>Orders</p>
-      <OrderTable orders={currentItems} />
+      <div className="order_table_container">
+        <OrderTable orders={currentItems} onStatusChange={fetchOrders} />
+      </div>
       <Pagination onPageChange={handlePageChange} pageCount={pageCount} forcePage={currentPage} />
     </div>
   );

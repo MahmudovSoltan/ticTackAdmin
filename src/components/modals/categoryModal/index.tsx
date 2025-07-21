@@ -83,7 +83,7 @@ const CategoryFormModal = ({ onClose }: Props) => {
   return (
     <div className="product-form-modal">
       <div className="overlay" onClick={onClose}></div>
-
+           <div>
       <form className="product-form" onSubmit={handleSubmit}>
         <div className="close-button" onClick={onClose}>
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -163,6 +163,8 @@ const CategoryFormModal = ({ onClose }: Props) => {
           style={{ fontSize: "22px" }}
         />
       </form>
+
+           </div>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import '../css/tables.css'
 import { useOrderStore } from "../../../store/orderStore";
 import type { OrderStatus } from "../../../types/order.types";
@@ -55,28 +55,27 @@ const statuses = [
   "CANCELLED",
 ];
 
-const OrderTable = ({ orders }: { orders: Order[] }) => {
+const OrderTable = ({ orders,onStatusChange, }: { orders: Order[],  onStatusChange: () => void; }) => {
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const [selectedStatus, setSelectedStatus] = useState<{ [id: number]: string }>({});
-  const { updateOrderStatus, fetchOrders } = useOrderStore()
+  const { updateOrderStatus } = useOrderStore()
   const toggleExpand = (id: number) => {
     setExpandedRow(prev => (prev === id ? null : id));
 
   };
 
-  const handleStatusChange = (orderId: number, newStatus: OrderStatus) => {
-    setSelectedStatus(prev => ({ ...prev, [orderId]: newStatus }));
-    updateOrderStatus(orderId, newStatus)
-  };
+ const handleStatusChange = async (orderId: number, newStatus: OrderStatus) => {
+  setSelectedStatus(prev => ({ ...prev, [orderId]: newStatus }));
+  await updateOrderStatus(orderId, newStatus);
+  onStatusChange(); // orders yenilənsin deyə parentdə çağır
+};
 
   console.log(selectedStatus);
 
-  useEffect(() => {
-    fetchOrders()
-  }, [selectedStatus]);
+ 
   return (
     <div>
-      <table className="products-table">
+      <table className="products-table" style={{width:"max-content"}}>
         <thead>
           <tr>
             <th>Order No</th>
@@ -104,7 +103,7 @@ const OrderTable = ({ orders }: { orders: Order[] }) => {
                 <td>{order?.total} ₼</td>
                 <td>{order?.status}</td>
                 <td>
-                  <div>
+                  <div className="order_table_actions">
 
                     <button onClick={() => toggleExpand(order?.id)}>Ətraflı</button>
                     <div style={{ display: "inline-block", marginLeft: 10, position: "relative" }}>

@@ -17,3 +17,56 @@
   align-items: center;
   gap: 5px;
 }
+
+
+
+.stats-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.stat-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+}
+
+.label {
+  color: #777;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.value {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Rənglər */
+.stat-card.total .value {
+  color: #007bff;
+}
+
+.stat-card.delivered .value {
+  color: #28a745;
+}
+
+.stat-card.pending .value {
+  color: #ffc107;
+}
+
+.stat-card.preparing .value {
+  color: #fd7e14;
+}
+
+.stat-card.revenue .value {
+  color: #6f42c1;
+}

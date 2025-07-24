@@ -24,3 +24,12 @@ export const patchOrderStatus = async (id: number, status: OrderStatus): Promise
     }
 
 };
+export const getOrederSatistic = async ()=>{
+    try{
+        const response = await axiosInstance.get("/api/tiktak/orders/admin/stats")
+        return response.data
+    }catch(eror){
+        console.log(eror);
+        
+    }
+}

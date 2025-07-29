@@ -54,6 +54,7 @@ body {
   height: max-content;
   overflow: auto;
   margin-bottom: 50px;
+  position: relative;
 }
 .product_modal_container {
   height: 95%;

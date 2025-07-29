@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import Header from "../../components/Layout/header/Header"
 import Sidebar from "../../components/Layout/sidebar"
 import ProdutcsBody from "../../components/products/ProdutcsBody"
@@ -15,16 +15,21 @@ const Products = () => {
     fetchAllProducts
     // assuming this is the function to open the modal
   } = useProductStore();
-  console.log(products);
+  const [loading, setLoading] = useState<boolean>(false)
   useEffect(() => {
-    fetchAllProducts()
+    const getProducts = async () => {
+      setLoading(true)
+      await fetchAllProducts()
+      setLoading(false)
+    }
+    getProducts()
   }, [])
   return (
     <div className="">
       <Header />
       <div className="content container">
         <Sidebar />
-        <ProdutcsBody products={products ?? []} />
+        <ProdutcsBody products={products ?? []} loading={loading} />
       </div>
     </div>
   )

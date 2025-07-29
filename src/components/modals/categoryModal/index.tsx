@@ -130,7 +130,7 @@ const CategoryFormModal = ({ onClose }: Props) => {
                             <img
                                 src={preview || selectedCategory?.img_url}
                                 alt="Şəkil ön görünüşü"
-                                style={{ width: 120, height: 120, objectFit: "cover", borderRadius: 6, marginTop: 8 }}
+                                style={{ width: 80, height: 80, objectFit: "cover", borderRadius: 6, marginTop: 8 }}
                             />
                         </div>
                     )}

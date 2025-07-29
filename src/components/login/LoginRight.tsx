@@ -2,6 +2,7 @@ import { useFormik } from "formik";
 import { loginSchema } from "../../utils/validations";
 import Button from "../../ui/button";
 import { login } from "../../services/login";
+import { useState } from "react";
 
 const initialValues = {
   phone: "",
@@ -9,11 +10,14 @@ const initialValues = {
 };
 
 const LoginRight = () => {
+  const [loading,setLoading]= useState(false)
   const formik = useFormik({
     initialValues,
     validationSchema: loginSchema,
     onSubmit: async (values) => {
+      setLoading(true)
       await login(values);
+      setLoading(false)
     }
   });
 
@@ -55,7 +59,7 @@ const LoginRight = () => {
           )}
         </div>
 
-        <Button title="Login" type="submit" />
+        <Button title="Login" type="submit" loading={loading} />
       </form>
     </div>
   );

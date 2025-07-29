@@ -5,6 +5,7 @@ import Pagination from "../pagination/pagination";
 import { useShallow } from "zustand/shallow";
 import { useOrderStore } from "../../store/orderStore";
 import { getOrederSatistic } from "../../services/orders";
+import Loading from "../loading";
 
 type İOrderStstusType = {
   TOTAL: number,
@@ -16,7 +17,7 @@ type İOrderStstusType = {
 const OrdersBody = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [data, setData] = useState<İOrderStstusType | null>(null)
-
+  const [loading, setLoading] = useState<boolean>(false)
   const { orders, fetchOrders } = useOrderStore(
     useShallow((state) => ({
       orders: state.orders,
@@ -39,13 +40,17 @@ const OrdersBody = () => {
   useEffect(() => {
     fetchOrders()
     const getOrderData = async () => {
+      setLoading(true)
       const response = await getOrederSatistic()
       setData(response)
+      setLoading(false)
     }
     getOrderData()
   }, []);
 
-
+  if (loading) {
+    return    <div className="orders-body"> <Loading /></div>
+  }
   return (
     <div className="orders-body">
       <p>Orders</p>

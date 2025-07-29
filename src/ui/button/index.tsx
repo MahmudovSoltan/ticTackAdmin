@@ -1,3 +1,4 @@
+import Loading from '../../components/loading';
 import './css/button.css'
 interface ButtonProps {
     // Define any props you want to pass to the Button component
@@ -6,12 +7,13 @@ interface ButtonProps {
     style?: React.CSSProperties;
     className?: string;
     type?: "button" | "submit" | "reset";
-    disabled?:boolean
+    disabled?:boolean,
+    loading?:boolean
 }
-const Button = ({ title, onClick, style, className, type ,disabled}: ButtonProps) => {
+const Button = ({ title, onClick, style, className, type ,disabled,loading}: ButtonProps) => {
     return (
         <button  disabled={disabled} className={`custom-button ${className}`}  onClick={onClick} style={style} type={type || "button"}>
-            {title}
+                  {loading ? <Loading/>: title}
         </button>
     )
 }

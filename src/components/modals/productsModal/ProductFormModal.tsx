@@ -9,6 +9,7 @@ import { useShallow } from "zustand/shallow";
 import { useEffect, useRef, useState } from "react";
 import { uploadImage } from "../../../services/uploadImage";
 import { FiUpload } from "react-icons/fi";
+import { IoMdClose } from "react-icons/io";
 const MAX_SIZE_MB = 1;
 const ProductFormModal = ({ product }: { product: CreateProductType | null }) => {
     const { closeProductModal, createProduct, editProductFunction, productId, fetchAllProducts } = useProductStore();
@@ -86,11 +87,12 @@ const ProductFormModal = ({ product }: { product: CreateProductType | null }) =>
     }, [])
     return (
         <div className='product-form-modal'>
-                   <div className="overlay" onClick={closeProductModal}></div>
+            <div className="overlay" onClick={closeProductModal}></div>
             <div className="product_modal_container">
                 <form className="product-form" onSubmit={formik.handleSubmit}>
                     <div className="close-button" onClick={closeProductModal}>
                         {/* SVG close button */}
+                        <IoMdClose size={24}/>
                     </div>
 
                     <div className="product-form-content">
@@ -197,7 +199,7 @@ const ProductFormModal = ({ product }: { product: CreateProductType | null }) =>
                                 <img
                                     src={preview || product?.img_url}
                                     alt="Şəkil ön görünüşü"
-                                    style={{ width: 120, height: 120, objectFit: "cover", borderRadius: 6, marginTop: 8 }}
+                                    style={{ width: 100, height: 100, objectFit: "cover", borderRadius: 6, marginTop: 8 }}
                                 />
                             </div>
                         )}
@@ -227,7 +229,7 @@ const ProductFormModal = ({ product }: { product: CreateProductType | null }) =>
                         </div>
                     </div>
 
-                    <Button type="submit" title="Məlumatları yarat" style={{ fontSize: "22px" }} />
+                    <Button type="submit" title={product ? "Məhsula düzəliş et":"Məhsul yarat"} style={{ fontSize: "22px" }} />
                 </form>
             </div>
         </div>

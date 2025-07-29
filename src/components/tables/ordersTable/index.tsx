@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import '../css/tables.css'
 import { useOrderStore } from "../../../store/orderStore";
 import type { OrderStatus } from "../../../types/order.types";
+import Loading from "../../loading";
 
 interface Product {
   id: number;
@@ -55,27 +56,35 @@ const statuses = [
   "CANCELLED",
 ];
 
-const OrderTable = ({ orders,onStatusChange, }: { orders: Order[],  onStatusChange: () => void; }) => {
+const OrderTable = ({ orders, onStatusChange, }: { orders: Order[], onStatusChange: () => void; }) => {
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const [selectedStatus, setSelectedStatus] = useState<{ [id: number]: string }>({});
+  const [loading, setLoading] = useState(false)
   const { updateOrderStatus } = useOrderStore()
   const toggleExpand = (id: number) => {
     setExpandedRow(prev => (prev === id ? null : id));
 
   };
 
- const handleStatusChange = async (orderId: number, newStatus: OrderStatus) => {
-  setSelectedStatus(prev => ({ ...prev, [orderId]: newStatus }));
-  await updateOrderStatus(orderId, newStatus);
-  onStatusChange(); // orders yenilənsin deyə parentdə çağır
-};
+  const handleStatusChange = async (orderId: number, newStatus: OrderStatus) => {
+    setSelectedStatus(prev => ({ ...prev, [orderId]: newStatus }));
+    setLoading(true)
+    await updateOrderStatus(orderId, newStatus);
+    onStatusChange();
+    setLoading(false)
+  };
 
-  console.log(selectedStatus);
+  if (loading) {
+    return <div className="products-table">
+      <Loading />
+    </div>
 
- 
+  }
+
+
   return (
     <div>
-      <table className="products-table" style={{width:"max-content"}}>
+      <table className="products-table" style={{ width: "max-content" }}>
         <thead>
           <tr>
             <th>Order No</th>

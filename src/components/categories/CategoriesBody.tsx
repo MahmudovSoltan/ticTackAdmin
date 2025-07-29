@@ -5,10 +5,13 @@ import CategoryDeledeModal from "../modals/categoryDeleteModal"
 import CategoryFormModal from "../modals/categoryModal"
 import CategoryTable from "../tables/categoriesTable"
 import Pagination from "../pagination/pagination"
+import Loading from "../loading"
 
 const CategoriesBody = () => {
   const { categoryModal, openCreateModal, openEditModal, closeModals, deleteModal, openDeleteModal, fetchCategories, categories } = useCategoryStore()
+  const [loading,setLoading]= useState(false)
   const [currentPage, setCurrentPage] = useState(0);
+  
   const itemsPerPage = 3;
 
 
@@ -21,9 +24,18 @@ const CategoriesBody = () => {
     setCurrentPage(selected);
   };
   useEffect(() => {
-    fetchCategories()
+    const getCategorise = async()=>{
+        setLoading(true)
+       await fetchCategories()
+       setLoading(false)
+    }
+    getCategorise()
   }, [])
-  console.log(categories);
+
+  if (loading) {
+    return <div className="category-body"><Loading/></div>
+    
+  }
   
   return (
     <div className="category-body">

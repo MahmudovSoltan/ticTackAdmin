@@ -4,12 +4,14 @@ import { useUserStore } from "../../store/userStore";
 import UsersTables from "../tables/userTables";
 import { useEffect, useState } from "react";
 import Pagination from "../pagination/pagination";
+import Loading from "../loading";
 
 
 
 
 const UsersBody = () => {
     const [currentPage, setCurrentPage] = useState(0);
+    const [loading, setLoading] = useState(false)
     const itemsPerPage = 5;
     const { users, fetchUsers } = useUserStore(
         useShallow((state) => ({
@@ -19,7 +21,12 @@ const UsersBody = () => {
     );
 
     useEffect(() => {
-        fetchUsers()
+        const getAllUsers = async () => {
+            setLoading(true)
+            await fetchUsers()
+            setLoading(false)
+        }
+        getAllUsers()
     }, [])
 
 
@@ -31,6 +38,12 @@ const UsersBody = () => {
     const handlePageChange = ({ selected }: { selected: number }) => {
         setCurrentPage(selected);
     };
+    if (loading) {
+        return <div className="users_body">
+            <Loading />
+        </div>
+
+    }
     return (
         <div className="users_body">
             <p>İstifadəçilər</p>

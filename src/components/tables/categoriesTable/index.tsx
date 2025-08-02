@@ -20,7 +20,7 @@ const CategoryTable = ({ categories, handleEdit, openDeleteModal }: Props) => {
             <th>Name</th>
             <th>Image</th>
             <th>Description</th>
-            <th>Created At</th>
+            <th style={{width:"120px"}}>Created At</th>
             <th></th>
           </tr>
         </thead>

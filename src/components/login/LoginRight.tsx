@@ -10,7 +10,7 @@ const initialValues = {
 };
 
 const LoginRight = () => {
-  const [loading,setLoading]= useState(false)
+  const [loading, setLoading] = useState(false)
   const formik = useFormik({
     initialValues,
     validationSchema: loginSchema,
@@ -27,7 +27,9 @@ const LoginRight = () => {
       <form onSubmit={formik.handleSubmit}>
         <div className="phone">
           <label htmlFor="phone">Telefon</label>
-          <div className="input-wrapper">
+          <div className="input-wrapper" style={{
+            border: formik.errors.phone && formik.touched.phone ? "1px solid #e53935" : undefined,
+          }} >
             <input
               id="phone"
               name="phone"
@@ -44,7 +46,9 @@ const LoginRight = () => {
 
         <div className="password">
           <label htmlFor="password">Parol</label>
-          <div className="input-wrapper">
+          <div className="input-wrapper" style={{
+            border: formik.errors.password && formik.touched.password ? "1px solid #e53935" : undefined,
+          }}>
             <input
               id="password"
               name="password"
@@ -58,7 +62,6 @@ const LoginRight = () => {
             <div className="error-message">{formik.errors.password}</div>
           )}
         </div>
-
         <Button title="Login" type="submit" loading={loading} />
       </form>
     </div>

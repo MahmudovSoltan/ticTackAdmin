@@ -142,6 +142,7 @@ const CampinsModal = () => {
           value={data.description}
           onChange={handleChangeInput}
           required
+          style={{height:"150px"}}
         />
 
         {/* ——— Submit ——— */}
